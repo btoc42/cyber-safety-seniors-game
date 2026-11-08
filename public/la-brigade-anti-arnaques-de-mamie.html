@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>La Brigade Anti-Arnaques : Avec mes 2 chats et mon chihuahua !</title>
+  <meta name="description" content="Application interactive d'initiation et de protection pour Mamie (ton anniversaire) avec Paco le chihuahua et Minou & Plume les deux chats.">
+
+  <!-- Google Fonts: Lexend & Nunito pour une lisibilité senior optimale -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700;800;900&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Lexend', 'Nunito', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      font-family: 'Lexend', sans-serif;
+      background-color: #0B0D13;
+      color: #F5F5F4;
+      touch-action: manipulation;
+    }
+    .zoom-normal { font-size: 100%; }
+    .zoom-large { font-size: 120%; }
+    .zoom-xlarge { font-size: 140%; }
+    
+    @media print {
+      body { background-color: #ffffff !important; color: #000000 !important; }
+      .no-print { display: none !important; }
+      .print-only { display: block !important; }
+    }
+  </style>
+</head>
+<body class="zoom-normal min-h-screen flex flex-col bg-[#0B0D13] text-stone-100 transition-all duration-150">
+
+  <!-- ACCESSIBILITY TOP BAR -->
+  <header class="no-print bg-[#10121A] border-b border-stone-800 sticky top-0 z-40 shadow-md">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-3">
+      <!-- Title & Mascots -->
+      <div class="flex items-center gap-3">
+        <span class="text-3xl">🐾</span>
+        <div>
+          <h1 class="text-lg sm:text-xl font-extrabold text-white leading-tight">
+            La Brigade Anti-Arnaques
+          </h1>
+          <p class="text-xs font-semibold text-amber-400">
+            Avec Paco le chihuahua, Minou & Plume les chats !
+          </p>
+        </div>
+      </div>
+
+      <!-- Quick Accessibility Tools -->
+      <div class="flex items-center gap-2">
+        <div class="flex items-center bg-[#1C2030] rounded-xl p-1 border border-stone-700" title="Agrandir la taille du texte">
+          <button onclick="setZoom('normal')" class="px-2.5 py-1 text-xs font-extrabold rounded-lg hover:bg-stone-700 text-stone-200 transition">A</button>
+          <button onclick="setZoom('large')" class="px-2.5 py-1 text-sm font-extrabold rounded-lg hover:bg-stone-700 text-stone-200 transition">A+</button>
+          <button onclick="setZoom('xlarge')" class="px-2.5 py-1 text-base font-extrabold rounded-lg hover:bg-stone-700 text-stone-200 transition">A++</button>
+        </div>
+
+        <button onclick="toggleAudio()" id="audioToggleBtn" class="px-3 py-1.5 bg-[#202538] hover:bg-[#282E45] border border-stone-700 text-amber-300 rounded-xl text-xs font-extrabold flex items-center gap-1.5 transition">
+          <span id="audioIcon">🔊</span>
+          <span id="audioLabel">Son : Activé</span>
+        </button>
+
+        <span class="px-3 py-1.5 bg-stone-900 border border-stone-700 text-stone-300 rounded-xl text-xs font-bold">
+          🌙 Mode Nuit
+        </span>
+      </div>
+    </div>
+
+    <!-- MAIN NAVIGATION TABS -->
+    <nav class="max-w-6xl mx-auto px-4 pt-1 flex gap-2 overflow-x-auto text-sm sm:text-base font-bold">
+      <button onclick="switchTab('hunt')" id="tabBtn-hunt" class="py-3 px-4 border-b-4 border-amber-500 text-amber-400 flex items-center gap-2">
+        <span>🐾</span> <span>1. Le flair de Paco (Pièges)</span>
+      </button>
+      <button onclick="switchTab('crossword')" id="tabBtn-crossword" class="py-3 px-4 border-b-4 border-transparent text-stone-400 hover:text-white flex items-center gap-2">
+        <span>🧩</span> <span>2. Mots Croisés de Minou</span>
+      </button>
+      <button onclick="switchTab('fridge')" id="tabBtn-fridge" class="py-3 px-4 border-b-4 border-transparent text-stone-400 hover:text-white flex items-center gap-2">
+        <span>📑</span> <span>3. Le Mémo du Frigo</span>
+      </button>
+    </nav>
+  </header>
+
+  <!-- MAIN CONTAINER -->
+  <main class="flex-1 max-w-5xl w-full mx-auto p-4 sm:p-6 space-y-6">
+
+    <!-- ========================================== -->
+    <!-- SECTION 1 : LE FLAIR DE PACO (PIÈGES) -->
+    <!-- ========================================== -->
+    <section id="section-hunt" class="space-y-6">
+      <!-- Brigade Intro Card -->
+      <div class="bg-amber-50 border-2 border-amber-300 rounded-3xl p-5 sm:p-6 shadow-sm flex flex-col sm:flex-row items-center gap-4">
+        <div class="text-5xl shrink-0 p-3 bg-amber-200/80 rounded-2xl">🐕</div>
+        <div class="flex-1 text-center sm:text-left space-y-1">
+          <span class="text-xs font-black uppercase tracking-wider text-amber-800 bg-amber-200 px-2 py-0.5 rounded-full">Mini-Jeu 1</span>
+          <h2 class="text-2xl font-black text-stone-950">Le flair de Paco : Chasse aux pièges</h2>
+          <p class="text-stone-700 text-base leading-relaxed">
+            Paco le chihuahua grogne gentiment face aux arnaques, tandis que Minou et Plume ronronnent dès que l'on a le bon réflexe !
+          </p>
+        </div>
+        <div class="bg-white rounded-2xl p-3 border border-amber-300 text-center min-w-[120px]">
+          <span class="text-xs font-bold text-stone-500 block">Friandises</span>
+          <span class="text-2xl font-black text-amber-600" id="treatsDisplay">🦴 0</span>
+        </div>
+      </div>
+
+      <!-- Smartphone Simulation Box -->
+      <div class="max-w-xl mx-auto bg-stone-800 rounded-3xl p-4 sm:p-6 shadow-xl border-4 border-stone-700 text-white space-y-4">
+        <!-- Phone Top Info -->
+        <div class="flex items-center justify-between text-xs text-stone-400 px-1">
+          <span id="phoneTime">11:42</span>
+          <span class="font-bold">Mission <span id="missionNumber">1</span> sur 5</span>
+          <span>4G 🔋 88%</span>
+        </div>
+
+        <!-- Phone Message Screen -->
+        <div class="bg-white text-stone-900 rounded-2xl p-4 sm:p-6 shadow-inner space-y-3 min-h-[260px] flex flex-col justify-between">
+          <div>
+            <div class="flex items-center gap-3 pb-3 border-b border-stone-150">
+              <span class="text-3xl" id="senderIcon">💬</span>
+              <div>
+                <p class="font-black text-base text-stone-950" id="senderName">CHRONOPOST / LIVRAISON</p>
+                <p class="text-xs text-stone-500" id="senderSubtitle">+33 6 82 14 90 23 (Numéro inconnu)</p>
+              </div>
+            </div>
+
+            <div class="mt-4 p-4 rounded-xl bg-stone-100 text-stone-900 text-base font-semibold leading-relaxed" id="messageBubble">
+              Votre colis n° 4892 ne rentre pas dans la boîte aux lettres. Veuillez régler 1,99 € de frais sur chronopost-suivi-frais.com
+            </div>
+          </div>
+
+          <p class="text-center font-bold text-stone-800 text-base pt-2">
+            Que fais-tu face à ce message ?
+          </p>
+        </div>
+
+        <!-- 2 Big Buttons -->
+        <div id="huntActionButtons" class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+          <button onclick="chooseAction('refuse')" class="min-h-[58px] px-4 py-3 bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white rounded-2xl font-black text-lg flex items-center justify-center gap-2 shadow-md transition">
+            <span>🛑 Stop ! Je refuse</span>
+          </button>
+          <button onclick="chooseAction('click')" class="min-h-[58px] px-4 py-3 bg-rose-600 hover:bg-rose-700 active:scale-95 text-white rounded-2xl font-bold text-lg flex items-center justify-center gap-2 shadow-md transition">
+            <span>👉 Je clique / Je donne</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Feedback Area -->
+      <div id="huntFeedback" class="hidden rounded-3xl p-6 border-3 space-y-3 animate-in">
+        <!-- Content injected dynamically -->
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- SECTION 2 : MOTS CROISÉS DE MINOU & PLUME -->
+    <!-- ========================================== -->
+    <section id="section-crossword" class="hidden space-y-6">
+      <div class="bg-amber-50 border-2 border-amber-300 rounded-3xl p-5 sm:p-6 shadow-sm flex flex-col sm:flex-row items-center gap-4">
+        <div class="text-5xl shrink-0 p-3 bg-amber-200/80 rounded-2xl">🐱</div>
+        <div class="flex-1 text-center sm:text-left space-y-1">
+          <span class="text-xs font-black uppercase tracking-wider text-amber-800 bg-amber-200 px-2 py-0.5 rounded-full">Mini-Jeu 2</span>
+          <h2 class="text-2xl font-black text-stone-950">Les Mots Croisés de Plume & Minou</h2>
+          <p class="text-stone-700 text-base leading-relaxed">
+            Remplis la grille en tapant sur le grand clavier sous la grille. Minou et Paco t'aident avec des indices doux !
+          </p>
+        </div>
+        <button onclick="revealMinouHint()" class="px-4 py-3 bg-amber-600 hover:bg-amber-700 text-white rounded-2xl font-extrabold text-sm flex items-center gap-2 shadow-xs transition">
+          <span>🐾</span> <span>Indice de Minou</span>
+        </button>
+      </div>
+
+      <!-- Clues Banner & Grid -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        <!-- Grid & Keyboard Column -->
+        <div class="lg:col-span-7 space-y-4">
+          <div class="bg-white rounded-3xl p-4 sm:p-6 border border-stone-200 shadow-sm flex flex-col items-center">
+            <!-- Active Clue Header -->
+            <div class="w-full bg-amber-100/90 rounded-2xl p-4 border border-amber-300 mb-4 text-center">
+              <span class="text-xs font-extrabold text-amber-900 uppercase block mb-1" id="activeWordLabel">Mot n°1 - Horizontal</span>
+              <p class="text-lg font-black text-stone-950" id="activeWordClue">Établissement qui ne demande JAMAIS vos codes par SMS</p>
+            </div>
+
+            <!-- The Crossword Grid -->
+            <div id="crosswordGridContainer" class="p-2 select-none overflow-x-auto">
+              <!-- Grid rendered in JS -->
+            </div>
+
+            <!-- Virtual Keyboard -->
+            <div class="w-full mt-4 p-3 bg-stone-100 rounded-2xl border border-stone-200 space-y-2">
+              <p class="text-xs text-stone-500 font-bold text-center">Grand Clavier Tactile AZERTY Confort</p>
+              <div class="flex flex-col gap-1.5" id="virtualKeyboard">
+                <!-- Buttons injected via JS -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Clues List Column -->
+        <div class="lg:col-span-5 bg-white rounded-3xl p-5 border border-stone-200 shadow-sm space-y-4">
+          <h3 class="text-lg font-black text-stone-900 border-b pb-2 flex items-center justify-between">
+            <span>Définitions simples</span>
+            <span class="text-xs font-normal text-stone-500">Clique pour sélectionner</span>
+          </h3>
+
+          <div class="space-y-2" id="cluesList">
+            <!-- Clues injected via JS -->
+          </div>
+
+          <div class="pt-3 border-t flex gap-2">
+            <button onclick="checkGridAnswers()" class="flex-1 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-black text-base transition">
+              ✓ Vérifier mes réponses
+            </button>
+            <button onclick="clearGridAnswers()" class="px-3 py-3 text-stone-600 hover:bg-stone-100 rounded-xl font-bold text-xs transition">
+              Recommencer
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- SECTION 3 : LE MÉMO DU FRIGO -->
+    <!-- ========================================== -->
+    <section id="section-fridge" class="hidden space-y-6">
+      <div class="bg-white rounded-3xl p-5 sm:p-6 border border-stone-200 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4 no-print">
+        <div class="space-y-1 text-center sm:text-left">
+          <span class="text-xs font-black uppercase tracking-wider text-amber-700 bg-amber-100 px-3 py-1 rounded-full">Espace Pratique</span>
+          <h2 class="text-2xl font-black text-stone-950">Le Mémo du Frigo de la Brigade</h2>
+          <p class="text-stone-600 text-base">À imprimer sur une feuille A4 pour le coller sur le réfrigérateur avec un aimant !</p>
+        </div>
+        <button onclick="window.print()" class="px-6 py-3.5 bg-amber-600 hover:bg-amber-700 active:scale-95 text-white rounded-2xl font-black text-lg flex items-center gap-2 shadow-md transition">
+          <span>🖨️</span> <span>Imprimer pour mon frigo</span>
+        </button>
+      </div>
+
+      <!-- The Fridge Paper -->
+      <div class="bg-[#FFFDF9] rounded-3xl p-6 sm:p-10 border-4 border-amber-300 shadow-md space-y-6">
+        <div class="text-center pb-4 border-b-2 border-amber-200 space-y-1">
+          <div class="text-4xl mb-2">🐕 🐈 🐈</div>
+          <h1 class="text-2xl sm:text-3xl font-black text-stone-900 tracking-tight">LA BRIGADE ANTI-ARNAQUES : MÉMO DU FRIGO</h1>
+          <p class="text-base font-bold text-amber-800">Avec Paco le chihuahua, Minou & Plume les chats protecteurs 🐾</p>
+        </div>
+
+        <div class="space-y-4">
+          <h2 class="text-xl font-black text-stone-900 text-center uppercase tracking-wide">⭐ LES 3 RÈGLES D'OR DE PACO ⭐</h2>
+
+          <div class="bg-amber-50 p-5 rounded-2xl border-2 border-amber-300 flex items-start gap-4">
+            <span class="w-10 h-10 rounded-xl bg-amber-500 text-white flex items-center justify-center font-black text-xl shrink-0">1</span>
+            <div>
+              <h3 class="text-lg font-black text-stone-950">Ne JAMAIS cliquer sur un lien reçu par SMS ou e-mail imprévu</h3>
+              <p class="text-stone-700 text-base mt-0.5">Faux colis, fausse livraison ou retard : on ne touche à aucun lien bleu souligné.</p>
+            </div>
+          </div>
+
+          <div class="bg-rose-50 p-5 rounded-2xl border-2 border-rose-300 flex items-start gap-4">
+            <span class="w-10 h-10 rounded-xl bg-rose-500 text-white flex items-center justify-center font-black text-xl shrink-0">2</span>
+            <div>
+              <h3 class="text-lg font-black text-stone-950">La banque ne demande JAMAIS de mot de passe ou de code SMS</h3>
+              <p class="text-stone-700 text-base mt-0.5">Si un conseiller vous demande un code secret reçu par SMS : raccrochez tout de suite !</p>
+            </div>
+          </div>
+
+          <div class="bg-emerald-50 p-5 rounded-2xl border-2 border-emerald-300 flex items-start gap-4">
+            <span class="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center font-black text-xl shrink-0">3</span>
+            <div>
+              <h3 class="text-lg font-black text-stone-950">En cas de doute : j'appelle directement mes enfants au téléphone</h3>
+              <p class="text-stone-700 text-base mt-0.5">Un message « Coucou maman j'ai cassé mon téléphone » ? J'appelle sur son numéro habituel.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white p-5 rounded-2xl border-2 border-stone-300 space-y-3">
+          <h3 class="font-black text-lg text-stone-900">📞 Numéros utiles & d'urgence</h3>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-base">
+            <div class="p-3 bg-stone-50 rounded-xl border">
+              <span class="text-xs font-bold text-stone-500 block">Mon enfant / Ma famille :</span>
+              <span class="font-black text-stone-900">À noter au stylo ici</span>
+            </div>
+            <div class="p-3 bg-stone-50 rounded-xl border">
+              <span class="text-xs font-bold text-stone-500 block">Mon agence bancaire :</span>
+              <span class="font-black text-stone-900">À noter au stylo ici</span>
+            </div>
+            <div class="p-3 bg-stone-50 rounded-xl border">
+              <span class="text-xs font-bold text-stone-500 block">Info Escroqueries (gratuit) :</span>
+              <span class="font-black text-emerald-800">0 805 805 817</span>
+            </div>
+            <div class="p-3 bg-stone-50 rounded-xl border">
+              <span class="text-xs font-bold text-stone-500 block">Signaler un faux SMS par texto :</span>
+              <span class="font-black text-blue-800">Envoyer au 33700</span>
+            </div>
+          </div>
+        </div>
+
+        <p class="text-center text-sm font-bold text-stone-500 pt-2 border-t">
+          « Avec tout notre amour pour tes ton anniversaire. Paco, Minou, Plume et tes enfants veillent toujours sur toi ! »
+        </p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- JAVASCRIPT LOGIC (AUDIO SYNTHESIS, SCENARIOS, CROSSWORD, NAVIGATION) -->
+  <script>
+    // --- 1. WEB AUDIO API SYNTHESIZER ---
+    let audioEnabled = true;
+    let audioCtx = null;
+
+    function getAudioCtx() {
+      if (!audioCtx && typeof window !== 'undefined') {
+        const AudioClass = window.AudioContext || window.webkitAudioContext;
+        if (AudioClass) audioCtx = new AudioClass();
+      }
+      if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+      return audioCtx;
+    }
+
+    function toggleAudio() {
+      audioEnabled = !audioEnabled;
+      document.getElementById('audioLabel').textContent = audioEnabled ? 'Son : Activé' : 'Son : Coupé';
+      document.getElementById('audioIcon').textContent = audioEnabled ? '🔊' : '🔇';
+    }
+
+    // Paco's cute Chihuahua protective bark
+    function playPacoBark() {
+      if (!audioEnabled) return;
+      try {
+        const ctx = getAudioCtx();
+        if (!ctx) return;
+        const now = ctx.currentTime;
+        [0, 0.16].forEach(offset => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          const filter = ctx.createBiquadFilter();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(850, now + offset);
+          osc.frequency.exponentialRampToValueAtTime(1100, now + offset + 0.04);
+          osc.frequency.exponentialRampToValueAtTime(420, now + offset + 0.12);
+
+          filter.type = 'bandpass';
+          filter.frequency.setValueAtTime(950, now + offset);
+          filter.Q.setValueAtTime(3, now + offset);
+
+          gain.gain.setValueAtTime(0.08, now + offset);
+          gain.gain.exponentialRampToValueAtTime(0.0001, now + offset + 0.13);
+
+          osc.connect(filter);
+          filter.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(now + offset);
+          osc.stop(now + offset + 0.13);
+        });
+      } catch(e) {}
+    }
+
+    // Minou & Plume gentle soothing purr
+    function playCatPurr() {
+      if (!audioEnabled) return;
+      try {
+        const ctx = getAudioCtx();
+        if (!ctx) return;
+        const now = ctx.currentTime;
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        const lfo = ctx.createOscillator();
+        const lfoGain = ctx.createGain();
+
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(45, now);
+        lfo.frequency.setValueAtTime(25, now);
+        lfoGain.gain.setValueAtTime(16, now);
+        lfo.connect(osc.frequency);
+
+        const filter = ctx.createBiquadFilter();
+        filter.type = 'lowpass';
+        filter.frequency.setValueAtTime(150, now);
+
+        gain.gain.setValueAtTime(0.001, now);
+        gain.gain.linearRampToValueAtTime(0.1, now + 0.2);
+        gain.gain.setValueAtTime(0.1, now + 1.2);
+        gain.gain.linearRampToValueAtTime(0.0001, now + 1.7);
+
+        osc.connect(filter);
+        filter.connect(gain);
+        gain.connect(ctx.destination);
+        lfo.start(now);
+        osc.start(now);
+        lfo.stop(now + 1.7);
+        osc.stop(now + 1.7);
+      } catch(e) {}
+    }
+
+    // Victory chime
+    function playVictoryChime() {
+      if (!audioEnabled) return;
+      try {
+        const ctx = getAudioCtx();
+        if (!ctx) return;
+        const now = ctx.currentTime;
+        [523.25, 659.25, 783.99, 1046.5].forEach((freq, i) => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(freq, now + i * 0.1);
+          gain.gain.setValueAtTime(0.08, now + i * 0.1);
+          gain.gain.exponentialRampToValueAtTime(0.0001, now + i * 0.1 + 0.35);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(now + i * 0.1);
+          osc.stop(now + i * 0.1 + 0.35);
+        });
+      } catch(e) {}
+    }
+
+    // --- 2. ACCESSIBILITY ZOOM ---
+    function setZoom(level) {
+      document.body.className = `zoom-${level} min-h-screen flex flex-col text-stone-900 transition-all duration-150`;
+    }
+
+    // --- 3. NAVIGATION TABS ---
+    function switchTab(tabId) {
+      ['hunt', 'crossword', 'fridge'].forEach(t => {
+        document.getElementById(`section-${t}`).classList.add('hidden');
+        document.getElementById(`tabBtn-${t}`).className = 'py-3 px-4 border-b-4 border-transparent text-stone-600 hover:text-stone-900 flex items-center gap-2';
+      });
+      document.getElementById(`section-${tabId}`).classList.remove('hidden');
+      document.getElementById(`tabBtn-${tabId}`).className = 'py-3 px-4 border-b-4 border-amber-600 text-amber-900 flex items-center gap-2';
+    }
+
+    // --- 4. MINI-GAME 1 : SCENARIOS ---
+    const HUNT_SCENARIOS = [
+      {
+        id: 'chronopost',
+        icon: '📦',
+        sender: 'CHRONOPOST LIVRAISON',
+        sub: '+33 6 82 14 90 23 (Numéro inconnu)',
+        time: '11:42',
+        content: 'Votre colis n° 4892 ne rentre pas dans la boîte aux lettres. Veuillez régler 1,99 € de frais de re-livraison sur : bit.ly/colis-frais-2e',
+        paco: 'Waf ! Paco aboie ! Ne clique jamais sur ce lien bleu ! La Poste ne demande JAMAIS de régler des frais imprévus par SMS.',
+        cats: 'Ron-ron... Minou et Plume s\'étirent de bonheur ! Tu n\'as pas cliqué, le colis piégé est déjoué !',
+        rule: 'Règle d\'or : On ne clique sur aucun lien bleu dans les SMS de livraison.'
+      },
+      {
+        id: 'banque',
+        icon: '📞',
+        sender: 'SÉCURITÉ BANCAIRE',
+        sub: 'Appel d\'un prétendu conseiller bancaire',
+        time: '14:15',
+        content: '« Bonjour madame, un pirate tente de débiter 800 € sur votre compte. Donnez-moi vite le code secret à 6 chiffres reçu par SMS pour bloquer le virement ! »',
+        paco: 'Grrr... Paco grogne doucement ! Votre vrai banquier n\'a JAMAIS besoin de votre code reçu par SMS pour bloquer une fraude !',
+        cats: 'Purrr... Plume frotte sa tête contre toi ! En refusant de donner le code, tu as protégé tout ton compte !',
+        rule: 'Règle d\'or : Un code reçu par SMS est strictement secret. On ne le donne à personne au téléphone.'
+      },
+      {
+        id: 'enfant',
+        icon: '💬',
+        sender: 'NOUVEAU NUMÉRO',
+        sub: '+33 7 56 91 88 40',
+        time: '16:03',
+        content: '« Coucou maman, j\'ai fait tomber mon téléphone dans l\'eau, c\'est mon nouveau numéro d\'urgence. Peux-tu me dépanner pour une facture urgente ? »',
+        paco: 'Waf waf ! Paco donne un coup de patte ! C\'est un robot escroc qui écrit à des milliers de mamans en même temps !',
+        cats: 'Miaou ! Minou ronronne ! Tu as gardé la tête froide : on appelle d\'abord son enfant sur son numéro habituel !',
+        rule: 'Règle d\'or : Si un proche demande de l\'argent d\'un nouveau numéro, on l\'appelle sur son ancien numéro pour entendre sa vraie voix.'
+      },
+      {
+        id: 'impots',
+        icon: '✉️',
+        sender: 'DIRECTION DES FINANCES',
+        sub: 'remboursement@dgfip-avis-france.fr',
+        time: '18:20',
+        content: 'Remboursement de 145,20 € en attente en votre faveur. Pour recevoir la somme sous 48h, saisissez votre numéro de carte bancaire.',
+        paco: 'Waf ! Paco lève la truffe : les Impôts et l\'Assurance Maladie ne demandent JAMAIS une carte bleue pour vous rembourser !',
+        cats: 'Ron-ron-ron... Plume s\'endort paisiblement. Tu as évité l\'hameçon du faux remboursement !',
+        rule: 'Règle d\'or : Une carte bancaire sert à PAYER, jamais à recevoir un remboursement de l\'État.'
+      },
+      {
+        id: 'virus',
+        icon: '🚨',
+        sender: 'ALERTE SYSTÈME',
+        sub: 'Page internet clignotante avec sirène',
+        time: 'En direct',
+        content: 'ATTENTION ! Votre ordinateur est bloqué ! Appelez vite le numéro vert 08 90 21 44 00 pour débloquer votre appareil !',
+        paco: 'Waf ! Paco n\'a pas peur de la fausse sirène ! Ce n\'est PAS un virus, juste une page piégée pour vous faire paniquer !',
+        cats: 'Ron-ron ! Minou donne un coup de patte zen ! Il suffit d\'éteindre la tablette pour que tout redevienne calme.',
+        rule: 'Règle d\'or : Ne jamais appeler les numéros qui surgissent sur l\'écran. On éteint l\'appareil et on le rallume.'
+      }
+    ];
+
+    let currentScenarioIndex = 0;
+    let treatsCount = 0;
+
+    function renderScenario() {
+      const s = HUNT_SCENARIOS[currentScenarioIndex];
+      document.getElementById('missionNumber').textContent = currentScenarioIndex + 1;
+      document.getElementById('phoneTime').textContent = s.time;
+      document.getElementById('senderIcon').textContent = s.icon;
+      document.getElementById('senderName').textContent = s.sender;
+      document.getElementById('senderSubtitle').textContent = s.sub;
+      document.getElementById('messageBubble').textContent = s.content;
+
+      document.getElementById('huntActionButtons').classList.remove('hidden');
+      document.getElementById('huntFeedback').classList.add('hidden');
+    }
+
+    function chooseAction(action) {
+      const s = HUNT_SCENARIOS[currentScenarioIndex];
+      const feedback = document.getElementById('huntFeedback');
+      document.getElementById('huntActionButtons').classList.add('hidden');
+      feedback.classList.remove('hidden');
+
+      if (action === 'refuse') {
+        playCatPurr();
+        playVictoryChime();
+        treatsCount += 1;
+        document.getElementById('treatsDisplay').textContent = `🦴 ${treatsCount}`;
+
+        feedback.className = 'rounded-3xl p-6 border-3 bg-emerald-50 border-emerald-400 text-stone-900 space-y-3';
+        feedback.innerHTML = `
+          <div class="flex items-center gap-3">
+            <span class="text-4xl">🐱</span>
+            <div>
+              <span class="text-xs font-black text-emerald-800 uppercase bg-emerald-200 px-2.5 py-0.5 rounded-full">Bravo !</span>
+              <h3 class="text-xl font-black text-emerald-950">Minou et Plume ronronnent de bonheur !</h3>
+            </div>
+          </div>
+          <p class="text-base font-semibold text-emerald-950">${s.cats}</p>
+          <div class="p-3 bg-white rounded-xl border border-emerald-200 text-sm font-bold text-stone-800">💡 ${s.rule}</div>
+          <button onclick="nextScenario()" class="mt-2 w-full py-3 bg-amber-600 hover:bg-amber-700 text-white rounded-xl font-black text-base shadow-sm">
+            Passer au piège suivant ➔
+          </button>
+        `;
+      } else {
+        playPacoBark();
+        feedback.className = 'rounded-3xl p-6 border-3 bg-amber-50 border-amber-400 text-stone-900 space-y-3';
+        feedback.innerHTML = `
+          <div class="flex items-center gap-3">
+            <span class="text-4xl">🐕</span>
+            <div>
+              <span class="text-xs font-black text-amber-900 uppercase bg-amber-200 px-2.5 py-0.5 rounded-full">Paco veille au grain !</span>
+              <h3 class="text-xl font-black text-amber-950">Waf ! Paco te protège : c'est un piège !</h3>
+            </div>
+          </div>
+          <p class="text-base font-semibold text-amber-950">${s.paco}</p>
+          <div class="p-3 bg-white rounded-xl border border-amber-300 text-sm font-bold text-stone-800">💡 ${s.rule}</div>
+          <button onclick="nextScenario()" class="mt-2 w-full py-3 bg-stone-900 hover:bg-stone-800 text-white rounded-xl font-black text-base shadow-sm">
+            J'ai compris, je continue ➔
+          </button>
+        `;
+      }
+    }
+
+    function nextScenario() {
+      if (currentScenarioIndex < HUNT_SCENARIOS.length - 1) {
+        currentScenarioIndex += 1;
+        renderScenario();
+      } else {
+        playVictoryChime();
+        const feedback = document.getElementById('huntFeedback');
+        feedback.className = 'rounded-3xl p-6 border-3 bg-amber-100 border-amber-400 text-center space-y-3';
+        feedback.innerHTML = `
+          <div class="text-5xl">🏆 🐾</div>
+          <h3 class="text-2xl font-black text-stone-950">Félicitations !</h3>
+          <p class="text-base font-bold text-stone-800">Tu as terminé les 5 missions ! Tu as gagné <strong>${treatsCount} friandises</strong> pour Paco, Minou et Plume !</p>
+          <button onclick="currentScenarioIndex=0; renderScenario();" class="py-3 px-6 bg-amber-600 text-white rounded-xl font-black text-base">Rejouer les missions</button>
+        `;
+      }
+    }
+
+    // --- 5. MINI-GAME 2 : MOTS CROISÉS SIMPLIFIÉS ---
+    const CROSSWORD = {
+      rows: 6,
+      cols: 7,
+      words: [
+        { id: 'w1', dir: 'across', r: 0, c: 0, answer: 'BANQUE', clue: 'Établissement qui ne demande JAMAIS vos codes par SMS' },
+        { id: 'w2', dir: 'across', r: 2, c: 1, answer: 'PACO', clue: 'Le petit chihuahua fidèle qui monte la garde' },
+        { id: 'w3', dir: 'across', r: 4, c: 2, answer: 'CHAT', clue: 'Félin comme Minou et Plume qui ronronne' },
+        { id: 'w4', dir: 'down', r: 0, c: 0, answer: 'BOULE', clue: 'Balle de laine avec laquelle jouent les chatons' },
+        { id: 'w5', dir: 'down', r: 0, c: 4, answer: 'MOT', clue: 'Élément qui compose une phrase secrète' }
+      ]
+    };
+
+    let userGrid = Array.from({ length: 6 }, () => Array.from({ length: 7 }, () => ''));
+    let activeWordIndex = 0;
+    let selectedCell = { r: 0, c: 0 };
+
+    function initCrossword() {
+      renderCrosswordGrid();
+      renderVirtualKeyboard();
+      renderCluesList();
+    }
+
+    function renderCrosswordGrid() {
+      const container = document.getElementById('crosswordGridContainer');
+      let html = '<div class="grid gap-1.5" style="grid-template-columns: repeat(7, minmax(0, 1fr));">';
+
+      for (let r = 0; r < 6; r++) {
+        for (let c = 0; c < 7; c++) {
+          // Check if cell is playable
+          const word = CROSSWORD.words.find(w => {
+            if (w.dir === 'across') return w.r === r && c >= w.c && c < w.c + w.answer.length;
+            return w.c === c && r >= w.r && r < w.r + w.answer.length;
+          });
+
+          if (!word) {
+            html += '<div class="w-11 h-11 sm:w-13 sm:h-13 bg-stone-800 rounded-lg"></div>';
+          } else {
+            const isSel = selectedCell.r === r && selectedCell.c === c;
+            const letter = userGrid[r][c];
+            html += `
+              <button onclick="clickCell(${r}, ${c})" class="w-11 h-11 sm:w-13 sm:h-13 rounded-lg border-2 font-black text-xl sm:text-2xl flex items-center justify-center transition ${
+                isSel ? 'bg-amber-200 border-amber-600 ring-2 ring-amber-500' : 'bg-white border-stone-300 text-stone-900'
+              }">
+                ${letter}
+              </button>
+            `;
+          }
+        }
+      }
+      html += '</div>';
+      container.innerHTML = html;
+    }
+
+    function clickCell(r, c) {
+      selectedCell = { r, c };
+      // Switch active word if needed
+      const foundIdx = CROSSWORD.words.findIndex(w => {
+        if (w.dir === 'across') return w.r === r && c >= w.c && c < w.c + w.answer.length;
+        return w.c === c && r >= w.r && r < w.r + w.answer.length;
+      });
+      if (foundIdx !== -1) {
+        activeWordIndex = foundIdx;
+        const w = CROSSWORD.words[foundIdx];
+        document.getElementById('activeWordLabel').textContent = `Mot n°${foundIdx + 1} - ${w.dir === 'across' ? 'Horizontal' : 'Vertical'}`;
+        document.getElementById('activeWordClue').textContent = w.clue;
+      }
+      renderCrosswordGrid();
+    }
+
+    function typeLetter(char) {
+      const { r, c } = selectedCell;
+      userGrid[r][c] = char;
+      const w = CROSSWORD.words[activeWordIndex];
+      // Advance cursor
+      if (w.dir === 'across' && c + 1 < w.c + w.answer.length) {
+        selectedCell = { r, c: c + 1 };
+      } else if (w.dir === 'down' && r + 1 < w.r + w.answer.length) {
+        selectedCell = { r: r + 1, c };
+      }
+      renderCrosswordGrid();
+    }
+
+    function backspace() {
+      const { r, c } = selectedCell;
+      if (userGrid[r][c]) {
+        userGrid[r][c] = '';
+      } else {
+        const w = CROSSWORD.words[activeWordIndex];
+        if (w.dir === 'across' && c - 1 >= w.c) selectedCell = { r, c: c - 1 };
+        else if (w.dir === 'down' && r - 1 >= w.r) selectedCell = { r: r - 1, c };
+        userGrid[selectedCell.r][selectedCell.c] = '';
+      }
+      renderCrosswordGrid();
+    }
+
+    function revealMinouHint() {
+      playCatPurr();
+      const w = CROSSWORD.words[activeWordIndex];
+      for (let i = 0; i < w.answer.length; i++) {
+        const r = w.dir === 'across' ? w.r : w.r + i;
+        const c = w.dir === 'across' ? w.c + i : w.c;
+        if (!userGrid[r][c]) {
+          userGrid[r][c] = w.answer[i];
+          break;
+        }
+      }
+      renderCrosswordGrid();
+    }
+
+    function renderVirtualKeyboard() {
+      const rows = [
+        ['A', 'Z', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'],
+        ['Q', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'M'],
+        ['W', 'X', 'C', 'V', 'B', 'N']
+      ];
+      let html = '';
+      rows.forEach((r, idx) => {
+        html += '<div class="flex justify-center gap-1 sm:gap-1.5">';
+        r.forEach(k => {
+          html += `<button onclick="typeLetter('${k}')" class="h-11 w-8 sm:h-12 sm:w-10 bg-white hover:bg-amber-100 text-stone-900 font-black rounded-lg border border-stone-300 text-lg shadow-xs active:scale-95 transition">${k}</button>`;
+        });
+        if (idx === 2) {
+          html += `<button onclick="backspace()" class="h-11 px-3 bg-stone-200 text-stone-800 font-bold rounded-lg text-sm active:scale-95 transition">⌫ Effacer</button>`;
+        }
+        html += '</div>';
+      });
+      document.getElementById('virtualKeyboard').innerHTML = html;
+    }
+
+    function renderCluesList() {
+      const container = document.getElementById('cluesList');
+      let html = '';
+      CROSSWORD.words.forEach((w, idx) => {
+        html += `
+          <button onclick="activeWordIndex=${idx}; clickCell(${w.r}, ${w.c});" class="w-full text-left p-3 rounded-xl border border-stone-200 hover:bg-amber-50 transition">
+            <span class="text-xs font-black text-amber-800 uppercase block">${w.dir === 'across' ? '↔ Horizontal' : '↕ Vertical'} (${w.answer.length} lettres)</span>
+            <span class="font-bold text-stone-900">${w.clue}</span>
+          </button>
+        `;
+      });
+      container.innerHTML = html;
+    }
+
+    function checkGridAnswers() {
+      let allGood = true;
+      CROSSWORD.words.forEach(w => {
+        for (let i = 0; i < w.answer.length; i++) {
+          const r = w.dir === 'across' ? w.r : w.r + i;
+          const c = w.dir === 'across' ? w.c + i : w.c;
+          if (userGrid[r][c].toUpperCase() !== w.answer[i]) allGood = false;
+        }
+      });
+      if (allGood) {
+        playCatPurr();
+        playVictoryChime();
+        alert('🎉 Bravo ! Tous les mots croisés sont parfaitement remplis !');
+      } else {
+        playPacoBark();
+        alert('🐕 Paco : Presque parfait Mamie ! Vérifie encore quelques lettres ou clique sur "Indice de Minou" !');
+      }
+    }
+
+    function clearGridAnswers() {
+      if (confirm('Voulez-vous effacer la grille pour recommencer ?')) {
+        userGrid = Array.from({ length: 6 }, () => Array.from({ length: 7 }, () => ''));
+        renderCrosswordGrid();
+      }
+    }
+
+    // --- INITIALIZATION ---
+    window.addEventListener('DOMContentLoaded', () => {
+      renderScenario();
+      initCrossword();
+    });
+  </script>
+</body>
+</html>

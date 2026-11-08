@@ -1,0 +1,155 @@
+# ==============================================================================
+# .gitignore - La Brigade Anti-Arnaques de Maman
+# Modèle complet & sécurisé pour projet Web React + Vite + Node.js
+# ==============================================================================
+
+# ------------------------------------------------------------------------------
+# 1. DÉPENDANCES & MODULES
+# ------------------------------------------------------------------------------
+node_modules/
+.pnp
+.pnp.js
+
+# ------------------------------------------------------------------------------
+# 2. COMPILATION & FICHIERS DISTRIBUÉS (Build Output)
+# ------------------------------------------------------------------------------
+dist/
+dist-ssr/
+build/
+out/
+.next/
+.nuxt/
+.vuepress/dist/
+server.js
+
+# Cache de Vite & TypeScript
+.vite/
+*.tsbuildinfo
+
+# ------------------------------------------------------------------------------
+# 3. VARIABLES D'ENVIRONNEMENT & SECRETS (CRITIQUE : ZÉRO FUITE SUR GITHUB)
+# ------------------------------------------------------------------------------
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env.vault
+*.env
+*.env.*
+# Conserver expressément le fichier d'exemple pour les autres développeurs
+!.env.example
+
+# Clés privées, certificats SSL/TLS et identifiants sensibles
+*.pem
+*.key
+*.cert
+*.crt
+*.pfx
+*.p12
+*.pkcs12
+id_rsa*
+id_ed25519*
+*.pub
+
+# Fichiers de configuration de comptes de service Cloud / Firebase
+secrets*.json
+service-account*.json
+firebase-adminsdk*.json
+google-services.json
+GoogleService-Info.plist
+*.credentials
+*.token
+auth.json
+
+# ------------------------------------------------------------------------------
+# 4. LOGS ET TRACES D'EXÉCUTION
+# ------------------------------------------------------------------------------
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# ------------------------------------------------------------------------------
+# 5. TESTS ET RAPPORTS DE COUVERTURE (Code Coverage)
+# ------------------------------------------------------------------------------
+coverage/
+*.lcov
+.nyc_output/
+junit.xml
+
+# ------------------------------------------------------------------------------
+# 6. CACHES ET FICHIERS TEMPORAIRES
+# ------------------------------------------------------------------------------
+.cache/
+.parcel-cache/
+.turbo/
+.eslintcache
+.stylelintcache
+tmp/
+temp/
+/tmp/
+
+# Cache Python (scripts utilitaires)
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+
+# ------------------------------------------------------------------------------
+# 7. FICHIERS SYSTÈME & OS (macOS, Windows, Linux)
+# ------------------------------------------------------------------------------
+# macOS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+
+# Windows
+[Dd]esktop.ini
+[Tt]humbs.db
+[Tt]humbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+
+# Linux / Éditeurs temporaires
+*~
+.#*
+\#*#
+*.bak
+*.tmp
+*.orig
+
+# ------------------------------------------------------------------------------
+# 8. ÉDITEURS DE CODE & IDE
+# ------------------------------------------------------------------------------
+# Visual Studio Code (on ignore l'historique local mais on garde les configs partagées)
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+
+# JetBrains (WebStorm, IntelliJ)
+.idea/
+*.iws
+*.iml
+
+# Autres éditeurs
+*.sublime-project
+*.sublime-workspace
+*.swp
+*.swo
+
+# ------------------------------------------------------------------------------
+# 9. ARCHIVES & GROS FICHIERS VOLUMINEUX
+# ------------------------------------------------------------------------------
+*.zip
+*.tar.gz
+*.tgz
+*.rar
+*.7z

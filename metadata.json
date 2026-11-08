@@ -1,0 +1,6 @@
+{
+  "name": "La Brigade Anti-Arnaques de Maman - Mots Croisés & Cyber-Sérénité",
+  "description": "Application interactive et bienveillante pour Maman avec Paco le chihuahua et Minou & Plume les chats : mots croisés quotidiens 100% croisés, chasse aux arnaques (phishing, SMS, faux banquier) et conseils de sérénité numérique.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
